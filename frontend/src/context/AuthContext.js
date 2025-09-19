@@ -61,13 +61,16 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+    
+      setUser(null);
+      
+   
       await api.post(`/api/auth/logout?tenant=${tenant}`);
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      setUser(null);
-      // Redirect to login
-      window.location.href = '/';
+      
+      window.location.replace('/');
     }
   };
 

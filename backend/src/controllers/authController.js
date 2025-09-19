@@ -76,10 +76,12 @@ const logout = async(req,res) => {
       }
     }
     
-    // Clear the cookie
+    // Clear the cookie with same settings as login
     res.cookie("token", null, {
       expires: new Date(Date.now()),
-      httpOnly: true
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none'
     });
     
     res.status(200).json({
