@@ -27,10 +27,10 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use(helmet());
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: ['https://invoicecfrontend.netlify.app', 'http://localhost:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Tenant-ID']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Tenant-ID', 'Cookie']
 }));
 
 const limiter = rateLimit({
