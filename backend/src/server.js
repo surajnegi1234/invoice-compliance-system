@@ -52,6 +52,16 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Backend is working', timestamp: new Date().toISOString() });
 });
 
+app.get('/debug-tenants', async (req, res) => {
+  try {
+    const Tenant = require('./src/models/Tenant');
+    const tenants = await Tenant.find({});
+    res.json({ tenants, count: tenants.length });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+});
+
 app.use(tenantMiddleware);
 
 app.use('/api/tenants', tenantRoutes);
