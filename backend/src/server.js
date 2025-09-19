@@ -76,6 +76,21 @@ app.get('/debug-tenant-middleware', async (req, res) => {
   }
 });
 
+app.post('/simple-login', async (req, res) => {
+  try {
+    const { getTenantConnection } = require('./models/database');
+    const { getTenantModels } = require('./middleware/tenant');
+    
+    const tenantConnection = getTenantConnection('default');
+    const models = getTenantModels(tenantConnection);
+    
+    const user = await models.User.findOne({ email: 'admin@test.com' });
+    res.json({ found: !!user, email: user?.email, role: user?.role });
+  } catch (error) {
+    res.json({ error: error.message, stack: error.stack });
+  }
+});
+
 app.use(tenantMiddleware);
 
 app.use('/api/tenants', tenantRoutes);
