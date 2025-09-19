@@ -1,19 +1,7 @@
 {
   "name": "invoice-compliance-system",
-  "version": "1.0.0",
-  "description": "Multi-tenant invoice and compliance management system",
   "scripts": {
-    "install-all": "cd backend && npm install && cd ../frontend && npm install",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "backend": "cd backend && npm run dev",
-    "frontend": "cd frontend && npm start",
-    "seed": "cd backend && npm run seed",
-    "start": "npm run dev"
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.0"
-  },
-  "keywords": ["invoice", "compliance", "multi-tenant", "react", "nodejs"],
-  "author": "Developer",
-  "license": "MIT"
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd frontend && npm start"
+  }
 }
