@@ -54,7 +54,7 @@ app.get('/test', (req, res) => {
 
 app.get('/debug-tenants', async (req, res) => {
   try {
-    const Tenant = require('./src/models/Tenant');
+    const Tenant = require('./models/Tenant');
     const tenants = await Tenant.find({});
     res.json({ tenants, count: tenants.length });
   } catch (error) {
