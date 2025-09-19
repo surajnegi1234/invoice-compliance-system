@@ -6,8 +6,8 @@ module.exports = async(user, statusCode, res, message, tenantId) => {
  const options = {
   expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production', // only https in production
-  sameSite: 'lax'
+  secure: true, // always secure for production deployment
+  sameSite: 'none' // allow cross-origin cookies
  };
 
  // Send response with cookie
