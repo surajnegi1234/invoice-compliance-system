@@ -14,6 +14,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
   const [tenant, setTenant] = useState('default');
 
 
@@ -23,6 +24,12 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const checkAuthStatus = async () => {
+    // Skip auth check if we're logging out
+    if (loggingOut) {
+      setLoading(false);
+      return;
+    }
+    
     try {
       // Get tenant from URL params
       const urlParams = new URLSearchParams(window.location.search);
@@ -60,25 +67,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    try {
+    setLoggingOut(true);
     
-      setUser(null);
-      
-   
+    try {
+      // Call backend logout first
       await api.post(`/api/auth/logout?tenant=${tenant}`);
     } catch (error) {
       console.error('Logout error:', error);
-    } finally {
-      
-      window.location.replace('/');
     }
+    
+    // Full page reload to login - avoids re-render issues
+    window.location.href = '/login';
   };
 
   const value = {
     user,
     login,
     logout,
-    loading,
+    loading: loading || loggingOut,
     tenant
   };
 
