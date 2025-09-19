@@ -29,7 +29,7 @@ const tenantMiddleware = async (req, res, next) => {
 
     let tenant = await Tenant.findOne({ slug: tenantId, isActive: true });
     if (!tenant && tenantId === 'default') {
-      // Create default tenant if it doesn't exist
+     
       tenant = await Tenant.create({
         name: 'Default Organization',
         slug: 'default',

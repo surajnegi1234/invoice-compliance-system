@@ -50,11 +50,12 @@ cd ../frontend
 npm install
 ```
 
-3. **Setup database**
+3. **Setup database and seed test data**
 ```bash
 cd backend
 npm run seed
 ```
+*Note: Run `npm run seed` to populate the database with test users and sample data. This creates the admin account that can then create additional auditors and vendors. This works for both local MongoDB and MongoDB Atlas.*
 
 4. **Start the application**
 ```bash
@@ -67,15 +68,20 @@ cd frontend
 npm start
 ```
 
-The app will be available at:
+**Local Development:**
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
+
+**Production (Deployed):**
+- Frontend: https://invoicecfrontend.netlify.app
+- Backend API: https://invoice-backend-ld06.onrender.com
 
 ## Test Credentials
 
 **Admin Account:**
 - Email: admin@test.com
 - Password: admin123
+- *The admin can create new auditors and vendors through the dashboard after logging in*
 
 **Auditor Account:**
 - Email: auditor@test.com
@@ -88,10 +94,10 @@ The app will be available at:
 ## Testing Workflows
 
 ### Admin Flow
-1. Login with admin credentials
-2. Create new users (auditors and vendors)
-3. Create assignments between auditors and vendors
-4. View all system documents and activities
+1. Login with admin credentials to access the admin dashboard
+2. Create new users by selecting their role (auditor or vendor) and providing their details
+3. Set up assignments to determine which auditors will review documents from specific vendors
+4. Monitor the entire system by viewing all documents, user activities, and generating reports
 
 ### Auditor Flow
 1. Login with auditor credentials
@@ -131,12 +137,15 @@ Test-Assignment/
 └── README.md
 ```
 
-## Hosted URL
+## Hosted URLs
 
-*Note: This is a local development setup. For production deployment, the application can be hosted on:*
-- Frontend: Vercel, Netlify
-- Backend: Render, Railway, Heroku
-- Database: MongoDB Atlas
+**Live Application:**
+- **Frontend:** https://invoicecfrontend.netlify.app
+- **Backend API:** https://invoice-backend-ld06.onrender.com
+- **Database:** MongoDB Atlas
+
+**📱 Access the Application:**
+Visit the frontend URL above and login with the test credentials provided below.
 
 ## Key Features
 
@@ -165,6 +174,19 @@ JWT_SECRET=your-secret-key
 FRONTEND_URL=http://localhost:3000
 ```
 
+## Deployment
+
+**🌐 Production Deployment:**
+- **Frontend:** Deployed on Netlify
+- **Backend:** Deployed on Render
+- **Database:** MongoDB Atlas
+- **Status:** Live and Functional
+
+**🔄 Auto-Deployment:**
+- Frontend auto-deploys from `main` branch on GitHub
+- Backend auto-deploys from `main` branch on GitHub
+- Database is hosted on MongoDB Atlas cloud
+
 ## Troubleshooting
 
 **MongoDB Connection Issues:**
@@ -181,3 +203,8 @@ FRONTEND_URL=http://localhost:3000
 - Clear browser cache if login issues occur
 - Restart both servers if API calls fail
 - Check console for error messages
+
+**Production Issues:**
+- Check Render logs for backend errors
+- Check Netlify deploy logs for frontend issues
+- Verify environment variables are set correctly

@@ -1,7 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 
-// File upload configuration - took some time to get this right
+// File upload configuration - 
 const storage = multer.diskStorage({
   destination: (req,file,cb) => {
     cb(null, 'uploads/');
@@ -16,10 +16,10 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: parseInt(process.env.MAX_FILE_SIZE) || 5 * 1024 * 1024 // 5MB default
+    fileSize: parseInt(process.env.MAX_FILE_SIZE) || 5 * 1024 * 1024 
   },
   fileFilter: (req,file,cb) => {
-    // Only allow certain file types
+    // file types
     const allowedTypes = /jpeg|jpg|png|gif|pdf|doc|docx|xls|xlsx/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
@@ -47,7 +47,6 @@ const getDocuments = async(req,res) => {
       const vendorIds = assignments.map(a => a.vendor);
       filter.vendor = {$in: vendorIds};
     }
-    // Admins can see everything - no filter needed
 
     const documents = await Document.find(filter)
       .populate('vendor', 'name email')

@@ -48,50 +48,9 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
 
-app.get('/test', (req, res) => {
-  res.json({ message: 'Backend is working', timestamp: new Date().toISOString() });
-});
 
-app.get('/debug-tenants', async (req, res) => {
-  try {
-    const Tenant = require('./models/Tenant');
-    const tenants = await Tenant.find({});
-    res.json({ tenants, count: tenants.length });
-  } catch (error) {
-    res.json({ error: error.message });
-  }
-});
 
-app.get('/debug-tenant-middleware', async (req, res) => {
-  try {
-    const Tenant = require('./models/Tenant');
-    const tenant = await Tenant.findOne({ slug: 'default', isActive: true });
-    res.json({ 
-      found: !!tenant, 
-      tenant: tenant,
-      query: { slug: 'default', isActive: true }
-    });
-  } catch (error) {
-    res.json({ error: error.message });
-  }
-});
 
-app.post('/simple-login', async (req, res) => {
-  try {
-    const { getTenantConnection } = require('./models/database');
-    const { getTenantModels } = require('./middleware/tenant');
-    
-    const tenantConnection = getTenantConnection('default');
-    const models = getTenantModels(tenantConnection);
-    
-    const user = await models.User.findOne({ email: 'admin@test.com' });
-    res.json({ found: !!user, email: user?.email, role: user?.role });
-  } catch (error) {
-    res.json({ error: error.message, stack: error.stack });
-  }
-});
-
-// Simple tenant middleware that always uses 'default'
 app.use((req, res, next) => {
   try {
     const { getTenantConnection } = require('./models/database');
@@ -134,8 +93,7 @@ app.use((err,req,res,next) => {
 app.use('*', (req,res) => {
   res.status(404).json({
     success: false,
-    message: `Route ${req.originalUrl} not found`,
-    availableRoutes: ['/api/auth/login', '/api/tenants', '/test']
+    message: `Route ${req.originalUrl} not found`
   });
 });
 
