@@ -47,8 +47,12 @@ app.use(express.json({limit: '10mb'}));
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
-app.use(tenantMiddleware);
 
+app.get('/test', (req, res) => {
+  res.json({ message: 'Backend is working', timestamp: new Date().toISOString() });
+});
+
+app.use(tenantMiddleware);
 
 app.use('/api/tenants', tenantRoutes);
 app.use('/api/auth', authRoutes);
@@ -56,10 +60,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/activities', activityRoutes);
-
-app.get('/test', (req, res) => {
-  res.json({ message: 'Backend is working', tenant: req.tenant?.id || 'none' });
-});
 
 
 
