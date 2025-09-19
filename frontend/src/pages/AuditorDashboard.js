@@ -110,7 +110,7 @@ const AuditorDashboard = () => {
   }
 
   const pendingDocuments = Array.isArray(documents) ? documents.filter(doc => doc.status === 'pending') : [];
-  const underReviewDocuments = Array.isArray(documents) ? documents.filter(doc => doc.status === 'under_review') : [];
+
   const approvedDocuments = Array.isArray(documents) ? documents.filter(doc => doc.status === 'approved') : [];
 
   return (
