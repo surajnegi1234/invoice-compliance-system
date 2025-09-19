@@ -57,6 +57,10 @@ app.use('/api/documents', documentRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/activities', activityRoutes);
 
+app.get('/test', (req, res) => {
+  res.json({ message: 'Backend is working', tenant: req.tenant?.id || 'none' });
+});
+
 
 
 
@@ -74,7 +78,8 @@ app.use((err,req,res,next) => {
 app.use('*', (req,res) => {
   res.status(404).json({
     success: false,
-    message: `Route ${req.originalUrl} not found`
+    message: `Route ${req.originalUrl} not found`,
+    availableRoutes: ['/api/auth/login', '/api/tenants', '/test']
   });
 });
 
