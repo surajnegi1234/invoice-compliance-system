@@ -62,6 +62,20 @@ app.get('/debug-tenants', async (req, res) => {
   }
 });
 
+app.get('/debug-tenant-middleware', async (req, res) => {
+  try {
+    const Tenant = require('./models/Tenant');
+    const tenant = await Tenant.findOne({ slug: 'default', isActive: true });
+    res.json({ 
+      found: !!tenant, 
+      tenant: tenant,
+      query: { slug: 'default', isActive: true }
+    });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+});
+
 app.use(tenantMiddleware);
 
 app.use('/api/tenants', tenantRoutes);
