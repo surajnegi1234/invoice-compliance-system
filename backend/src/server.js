@@ -91,7 +91,24 @@ app.post('/simple-login', async (req, res) => {
   }
 });
 
-app.use(tenantMiddleware);
+// Simple tenant middleware that always uses 'default'
+app.use((req, res, next) => {
+  try {
+    const { getTenantConnection } = require('./models/database');
+    const { getTenantModels } = require('./middleware/tenant');
+    
+    const tenantConnection = getTenantConnection('default');
+    req.tenant = {
+      id: 'default',
+      connection: tenantConnection,
+      models: getTenantModels(tenantConnection)
+    };
+    next();
+  } catch (error) {
+    console.error('Simple tenant middleware error:', error);
+    res.status(500).json({ message: 'Tenant setup failed' });
+  }
+});
 
 app.use('/api/tenants', tenantRoutes);
 app.use('/api/auth', authRoutes);
