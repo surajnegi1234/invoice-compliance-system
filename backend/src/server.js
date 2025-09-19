@@ -58,15 +58,7 @@ app.use('/api/assignments', assignmentRoutes);
 app.use('/api/activities', activityRoutes);
 
 
-app.get('/health', (req,res) => {
-  res.json({
-    success: true,
-    message: 'Server is running fine',
-    timestamp: new Date().toISOString(),
-    tenant: req.tenant?.id || 'none',
-    uptime: process.uptime()
-  });
-});
+
 
 app.use((err,req,res,next) => {
   console.error('error:', err.stack);

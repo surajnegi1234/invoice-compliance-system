@@ -27,8 +27,16 @@ const tenantMiddleware = async (req, res, next) => {
       tenantId = 'default';
     }
 
-    const tenant = await Tenant.findOne({ slug: tenantId, isActive: true });
-    if (!tenant && tenantId !== 'default') {
+    let tenant = await Tenant.findOne({ slug: tenantId, isActive: true });
+    if (!tenant && tenantId === 'default') {
+      // Create default tenant if it doesn't exist
+      tenant = await Tenant.create({
+        name: 'Default Organization',
+        slug: 'default',
+        domain: 'localhost',
+        isActive: true
+      });
+    } else if (!tenant) {
       return res.status(404).json({ message: 'Tenant not found' });
     }
     const tenantConnection = getTenantConnection(tenantId);
