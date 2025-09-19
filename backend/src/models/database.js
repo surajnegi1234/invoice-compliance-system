@@ -8,10 +8,19 @@ const getTenantConnection = (tenantId) => {
   }
 
   const dbName = `invoice_compliance_${tenantId}`;
-  const connection = mongoose.createConnection(
-    process.env.MONGODB_URI.replace('/invoice_compliance', `/${dbName}`)
-  );
-
+  let tenantUri = process.env.MONGODB_URI;
+  
+  // Replace database name in URI
+  if (tenantUri.includes('/invoice_compliance?')) {
+    tenantUri = tenantUri.replace('/invoice_compliance?', `/${dbName}?`);
+  } else if (tenantUri.includes('/invoice_compliance')) {
+    tenantUri = tenantUri.replace('/invoice_compliance', `/${dbName}`);
+  } else {
+    // If no database specified, add it
+    tenantUri = tenantUri.replace(/\?/, `/${dbName}?`);
+  }
+  
+  const connection = mongoose.createConnection(tenantUri);
   connections.set(tenantId, connection);
   console.log(`Connected to tenant database: ${dbName}`);
   
