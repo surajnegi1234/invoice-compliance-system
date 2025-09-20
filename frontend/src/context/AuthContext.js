@@ -70,13 +70,12 @@ export const AuthProvider = ({ children }) => {
     setLoggingOut(true);
     
     try {
-      // Call backend logout first
       await api.post(`/api/auth/logout?tenant=${tenant}`);
     } catch (error) {
       console.error('Logout error:', error);
     }
     
-    // Full page reload to login - avoids re-render issues
+  
     window.location.href = '/login';
   };
 
